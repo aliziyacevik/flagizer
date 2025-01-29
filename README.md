@@ -15,9 +15,29 @@ cd flagizer
 pip install python-dotenv
 ```
 
+3. Make the script executable and add it to your PATH:
+```bash
+# Make the script executable
+chmod +x flagizer.py
+
+# Create a symlink in a directory that's in your PATH
+# For macOS/Linux:
+sudo ln -s "$(pwd)/flagizer.py" /usr/local/bin/flagizer
+
+# For Windows:
+# Add the directory containing flagizer.py to your PATH environment variable
+```
+
 ## Usage
 
-Run the script directly:
+After adding to PATH, you can run the script from anywhere:
+
+```bash
+# From any directory
+flagizer --name IsMyFeatureEnabled --service integration --env sps,hr
+```
+
+Or run it directly from the script location:
 
 ```bash
 python flagizer.py --name IsMyFeatureEnabled --service integration --env sps,hr
@@ -48,16 +68,28 @@ The script will look for appsettings files in the following order:
 ```bash
 # Example 1: Using PROJECT_PATH
 echo "PROJECT_PATH=/path/to/services" > .env
-python flagizer.py --name IsNewFeatureEnabled --service shipment --env sps
+flagizer --name IsNewFeatureEnabled --service shipment --env sps
 # This will look in /path/to/services/ShipmentWebAPI/appsettings.*.json
 
-# Example 2: Without PROJECT_PATH
-python flagizer.py --name IsAnotherFeatureEnabled --service integration --env hr,si
+# Example 2: Without PROJECT_PATH (running from any directory)
+cd /path/to/your/project
+flagizer --name IsAnotherFeatureEnabled --service integration --env hr,si
 # This will look in:
 # - ./appsettings.*.json
 # - ./IntegrationWebAPI/appsettings.*.json
 
 # The feature will be set to false for all unspecified environments
+```
+
+### Uninstalling
+
+To remove the script from your PATH:
+```bash
+# For macOS/Linux:
+sudo rm /usr/local/bin/flagizer
+
+# For Windows:
+# Remove the directory from your PATH environment variable
 ```
 
 ## Development
